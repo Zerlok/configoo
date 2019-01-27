@@ -1,5 +1,3 @@
-syntax: global
-
 .venv/*
 .vscode/*
 __pycache__/*
