@@ -1,3 +1,5 @@
 #!/bin/bash
 
-PYTHONPATH=$PWD pytest -p no:cacheprovider $PWD/test
+PROJECT_DIR=$( dirname $( dirname $( realpath $0 ) ) )
+
+PYTHONPATH=$PROJECT_DIR/src pytest -p no:cacheprovider $PROJECT_DIR/test

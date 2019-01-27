@@ -1,21 +1,24 @@
 #!/bin/bash
 
-packages=( ${*} )
+PROJECT_DIR=$( dirname $( dirname $( realpath $0 ) ) )
+REQUIREMENTS_FILE=$PROJECT_DIR/requirements.txt
 
-pip install ${packages[*]} || exit 1
+PACKAGES=( ${*} )
 
-if [[ -f ./requirements.txt ]]; then
-    locked_packages=( $( cat ./requirements.txt | awk -F '==' '{ print $1 }' ) )
+pip install ${PACKAGES[*]} || exit 1
+
+if [[ -f $REQUIREMENTS_FILE ]]; then
+    LOCKED_PACKAGES=( $( cat $REQUIREMENTS_FILE | awk -F '==' '{ print $1 }' ) )
 else
-    locked_packages=()
+    LOCKED_PACKAGES=()
 fi
 
 pattern=$(
     python -c "\
-packages = set('${packages[*]}'.split(' '))
-packages.update('${locked_packages[*]}'.split(' '))
+packages = set('${PACKAGES[*]}'.split(' '))
+packages.update('${LOCKED_PACKAGES[*]}'.split(' '))
 print('|'.join(packages))
     "
 )
 
-pip freeze | grep -E $pattern > requirements.txt
+pip freeze | grep -E $pattern > $REQUIREMENTS_FILE
