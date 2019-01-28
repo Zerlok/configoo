@@ -1,6 +1,6 @@
 from typing import TypeVar, Type, Iterable, Tuple, Any, ClassVar, Dict
 
-from configlib.field import Field, FieldDefinition
+from ..field import Field, FieldDefinition
 
 __all__ = [
     'Model',

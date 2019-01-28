@@ -1,7 +1,7 @@
 import pytest
 from pathlib import Path
 
-from configlib import field, model, loader
+from configoo import field, model, loader
 
 
 def create_model_with_fields(*args) -> 'MockModel':
