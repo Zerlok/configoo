@@ -1,22 +1,31 @@
 #!/usr/bin/env python3.7
 
-from distutils.core import setup
+from setuptools import setup, find_packages
+
+LIB_NAME = 'configoo'
 
 
 setup(
-    name='configlib',
+    name=LIB_NAME,
     version='0.0.1',
     description='Python config lib for loading application configurations',
     author='Danil Troshnev',
     author_email='denergytro@gmail.com',
-    url='https://bitbucket.org/Zerlok/configlib/',
-    package_dir={
-        'configlib': 'src',
-    },
+    url=f'https://bitbucket.org/Zerlok/{LIB_NAME}/',
     packages=[
-        'configlib',
-        'configlib.field',
-        'configlib.model',
-        'configlib.loader',
+        '.'.join((
+            LIB_NAME,
+            package,
+        ))
+        for package in find_packages('src')
     ],
+    package_dir={
+        LIB_NAME: 'src',
+    },
+    install_requires=[
+        
+    ],
+    extras_require={
+
+    },
 )
