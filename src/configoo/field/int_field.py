@@ -39,10 +39,16 @@ class IntField(Field[str, int]):
                 "Invalid integer value!",
                 value,
             )
+        
+        self.check_min_value(clean_value)
+        self.check_max_value(clean_value)
 
+        return clean_value
+
+    def check_min_value(self, value: int) -> bool:
         if (
                 self.__min_value is not None
-                and clean_value < self.__min_value
+                and value < self.__min_value
         ):
             raise FieldValueError(
                 "Integer exceeds min value!",
@@ -50,9 +56,12 @@ class IntField(Field[str, int]):
                 self.__min_value,
             )
         
+        return True
+    
+    def check_max_value(self, value: int) -> bool:        
         if (
                 self.__max_value is not None
-                and clean_value > self.__max_value
+                and value > self.__max_value
         ):
             raise FieldValueError(
                 "Integer exceeds max value!",
@@ -60,4 +69,4 @@ class IntField(Field[str, int]):
                 self.__max_value,
             )
         
-        return clean_value
+        return True

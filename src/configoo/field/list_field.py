@@ -51,7 +51,10 @@ class ListField(Field[str, T]):
     
     def parse(self, value: str) -> List[T]:
         try:
-            parts = value.split(self.__separator) if len(value) else []
+            if not isinstance(value, list):
+                parts = value.split(self.__separator) if len(value) else []
+            else:
+                parts = value
         
         except (TypeError, ValueError) as err:
             raise FieldValueError(

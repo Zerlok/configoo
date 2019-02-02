@@ -1,48 +1,59 @@
 from typing import Type, Union
+
 from ipaddress import ip_address, IPv4Address, IPv6Address
+from urllib.parse import urlparse, ParseResult as Url
 
 from .base import Field, PT, RT
 from .exception import FieldValueError
 
+from .int_field import IntField
+
 __all__ = [
-    'Url',
-    'IpAddress',
-    'Route',
+    'UrlField',
+    'RouteField',
+    'IpField',
+    'PortField',
 ]
 
 
 IP = Union[IPv4Address, IPv6Address]
 
 
-class Url(Field[str, str]):
+class UrlField(Field[str, Url]):
     def __init__(
             self,
             name: str = None,
             required: bool = False,
-            default: Union[IP, str] = None,
+            default: Union[str, Url] = None,
             description: str = None,
     ) -> None:
+        if isinstance(default, str):
+            default = self.parse(default)
+
         super().__init__(
             name=name,
             required=required,
             default=default,
             description=description,
             parse_type=str,
-            return_type=str,
+            return_type=Url,
         )
     
-    def parse(self, value: str) -> str:
-        return value
+    def parse(self, value: str) -> Url:
+        return urlparse(value)
 
 
-class Route(Field[str, str]):
+class RouteField(Field[str, str]):
     def __init__(
             self,
             name: str = None,
             required: bool = False,
-            default: Union[IP, str] = None,
+            default: Union[str, Url] = None,
             description: str = None,
     ) -> None:
+        if isinstance(default, str):
+            default = self.parse(default)
+
         super().__init__(
             name=name,
             required=required,
@@ -53,19 +64,19 @@ class Route(Field[str, str]):
         )
 
     def parse(self, value: str) -> str:
-        return value
+        return urlparse(value).path
 
 
-class IpAddress(Field[str, IP]):
+class IpField(Field[str, IP]):
     def __init__(
             self,
             name: str = None,
             required: bool = False,
-            default: Union[IP, str] = None,
+            default: Union[str, IP] = None,
             description: str = None,
     ) -> None:
-        if default is not None and not isinstance(default, IP):
-            default = ip_address(default)
+        if isinstance(default, str):
+            default = self.parse(default)
         
         super().__init__(
             name=name,
@@ -87,3 +98,26 @@ class IpAddress(Field[str, IP]):
             )
         
         return clean_value
+
+
+class PortField(IntField):
+    __MIN_VALUE = 0
+    __MAX_VALUE = 2**16 - 1
+
+    def __init__(
+            self,
+            name: str = None,
+            required: bool = False,
+            default: int = None,
+            description: str = None,
+            min_value: int = None,
+            max_value: int = None,
+    ) -> None:
+        super().__init__(
+            name=name,
+            required=required,
+            default=default,
+            description=description,
+            min_value=max(min_value or self.__MIN_VALUE, self.__MIN_VALUE),
+            max_value=min(max_value or self.__MAX_VALUE, self.__MAX_VALUE),
+        )

@@ -1,3 +1,15 @@
 {
-    
+    "RUNNING_MODE": "b",
+    "REMOTE_ENDPOINTS": [
+        "/endpoint1",
+        "/endpoint2",
+        "/endpoint3"
+    ],
+    "PRESET_PATH": "test/resources/json_config1.json",
+    "LOG_LEVEL": "info",
+    "LOG_PATH": "test/resources",
+    "SCHEMA": {
+        "FOO": "BAR",
+        "spam": "eggs"
+    }
 }

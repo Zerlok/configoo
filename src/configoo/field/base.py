@@ -142,7 +142,7 @@ class FieldDefinition(Generic[PT, RT]):
         self.__parser = parser
     
     def __str__(self) -> str:
-        return f"{self.model.__name__}.{self.name}: {self.return_type}"
+        return f"{self.model.__name__}.{self.name}"
     
     __repr__ = __str__
     

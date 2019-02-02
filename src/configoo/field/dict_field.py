@@ -1,4 +1,4 @@
-from typing import Type, TypeVar, Dict, Callable, Tuple
+from typing import Type, TypeVar, Dict, Callable, Tuple, List, Any
 
 from .base import Field, PT, RT, FieldDefinition
 from .exception import FieldValueError
@@ -58,35 +58,36 @@ class DictField(Field[str, T]):
         self.__value_dtype = value
 
     def parse(self, value: str) -> Dict[K, V]:
-        key_value_separator, pair_separator = self.__separator
-
         try:
-            pairs = value.split(pair_separator) if len(value) else []
+            clean_pairs: List[Tuple[Any, Any]] = None
+
+            if isinstance(value, str):
+                key_value_separator, pair_separator = self.__separator
+                clean_pairs = [
+                    pair.split(key_value_separator, 1)
+                    for pair in (value.split(pair_separator) if len(value) else [])
+                ]
+
+            elif isinstance(value, list):
+                clean_pairs = value
+
+            elif isinstance(value, dict):
+                clean_pairs = list(value.items())
         
         except (TypeError, ValueError) as err:
             raise FieldValueError(
-                "Invalid Dict value!",
+                "Invalid dict value!",
                 value,
             )
         
         clean_dict = {}
 
-        for i, pair in enumerate(pairs):
+        for i, (key, value) in enumerate(clean_pairs):
             try:
-                key, value = pair.split(key_value_separator, 1)
-                
                 clean_key = self.key_dtype.parse(key)
                 clean_value = self.value_dtype.parse(value)
 
                 clean_dict[clean_key] = clean_value
-            
-            except ValueError as err:
-                raise FieldValueError(
-                    "Invalid dict pair format!",
-                    i,
-                    pair,
-                    self.__separator,
-                )
     
             except FieldValueError as err:
                 raise FieldValueError(

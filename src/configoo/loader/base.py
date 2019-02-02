@@ -182,13 +182,13 @@ class BaseLoaderDriver(LoaderDriver[PT]):
     
     def raise_invalid_field_parsing_type(self, context: BaseLoaderContext[PT, M]) -> None:
         raise self._INVALID_FIELD_PARSING_TYPE_ERROR(
-            f"Field parser '{context.field.name}' can not be parsed from {self._PARSING_TYPE} value type!",
+            f"Field '{context.field}' parser can not be used with {self._PARSING_TYPE} type!",
             context.field,
         )
     
     def raise_required_field_value_error(self, context: BaseLoaderContext[PT, M]) -> None:
         raise self._REQUIRED_FIELD_VALUE_ERROR(
-            f"Field variable '{context.field.name}' is required!",
+            f"Field '{context.field}' value is required!",
             context.field,
         )
     
@@ -200,9 +200,11 @@ class BaseLoaderDriver(LoaderDriver[PT]):
             exc_stack: Any,
     ) -> bool:
         if isinstance(exc_value, FieldValueError):
+            message, value = exc_value.args
             raise self._FIELD_VALUE_ERROR(
-                f"Invalid '{context.field.name}' field value!",
+                f"Field '{context.field}' has invalid value!",
                 context.field,
+                value,
             ) from exc_value
         
         elif isinstance(exc_value, self._LOADER_ERROR):

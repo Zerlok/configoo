@@ -9,6 +9,7 @@ from .base import BaseLoader, BaseLoaderDriver, BaseLoaderContext, PT, RT, M
 from .exception import LoaderError
 
 __all__ = [
+    'JsonLoaderDriver',
     'JsonLoader',
     'JsonLoaderError',
     'JsonVariableError',
@@ -42,7 +43,7 @@ class JsonLoaderContext(BaseLoaderContext[Any, M]):
             path: Path = None,
             data: Dict = None,
     ) -> None:
-        super(
+        super().__init__(
             driver=driver,
             model=model,
             field=field,
@@ -58,10 +59,27 @@ class JsonLoaderContext(BaseLoaderContext[Any, M]):
     @path.setter
     def path(self, value: Path) -> None:
         self.__path = value
+    
+    @property
+    def data(self) -> Optional[Dict[str, Any]]:
+        return self.__data
+    
+    @data.setter
+    def data(self, value: Dict[str, Any]) -> None:
+        self.__data = value
 
 
 class JsonLoaderDriver(BaseLoaderDriver[Any]):
-    _PARSING_TYPE = Any
+    __JSON_TYPES = (
+        type(None),
+        int,
+        float,
+        str,
+        list,
+        dict,
+    )
+
+    _PARSING_TYPE = Union[None, int, float, str, list, dict]
 
     _LOADER_ERROR = JsonLoaderError
     _REQUIRED_FIELD_VALUE_ERROR = JsonRequiredVariableError
@@ -81,9 +99,12 @@ class JsonLoaderDriver(BaseLoaderDriver[Any]):
     def start_loading(self, context: JsonLoaderContext[M]) -> None:
         with context.path.open('r') as fd:
             context.data = json.load(fd)
+    
+    def check_field_parsing_type(self, context: JsonLoaderContext[M]) -> bool:
+        return issubclass(context.field.parse_type, self.__JSON_TYPES)
 
     def get_field_value(self, context: JsonLoaderContext[M]) -> Union[int, str]:
-        return context.data.get(context.field.name, default=self._NONE)
+        return context.data.get(context.field.name, self._NONE)
 
 
 class JsonLoader(BaseLoader[Any]):
