@@ -6,15 +6,15 @@ from .base import Field, PT, RT
 from .exception import FieldValueError
 
 __all__ = [
-    'Path',
-    'FilePath',
-    'DirectoryPath',
+    'PathField',
+    'FilePathField',
+    'DirectoryPathField',
 ]
 
 AnyPath = Union[_Path, str]
 
 
-class Path(Field[str, _Path]):
+class PathField(Field[str, _Path]):
     def __init__(
             self,
             name: str = None,
@@ -134,7 +134,7 @@ class Path(Field[str, _Path]):
         return True
 
 
-class FilePath(Path):
+class FilePathField(PathField):
     def parse(self, value: str) -> _Path:
         clean_value = super().parse(value)
 
@@ -147,7 +147,7 @@ class FilePath(Path):
         return clean_value
 
 
-class DirectoryPath(Path):
+class DirectoryPathField(PathField):
     def parse(self, value: str) -> _Path:
         clean_value = super().parse(value)
 

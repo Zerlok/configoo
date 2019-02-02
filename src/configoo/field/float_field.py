@@ -1,22 +1,22 @@
-from typing import Type
+from typing import Type, Optional
 
 from .base import Field, PT, RT
 from .exception import FieldValueError
 
 __all__ = [
-    'Integer',
+    'FloatField',
 ]
 
 
-class Integer(Field[str, int]):
+class FloatField(Field[str, float]):
     def __init__(
             self,
             name: str = None,
             required: bool = False,
-            default: int = None,
+            default: float = None,
             description: str = None,
-            min_value: int = None,
-            max_value: int = None,
+            min_value: float = None,
+            max_value: float = None,
     ) -> None:
         super().__init__(
             name=name,
@@ -24,19 +24,19 @@ class Integer(Field[str, int]):
             default=default,
             description=description,
             parse_type=str,
-            return_type=int,
+            return_type=float,
         )
-        
+
         self.__min_value = min_value
         self.__max_value = max_value
     
-    def parse(self, value: str) -> int:
+    def parse(self, value: str) -> float:
         try:
-            clean_value = int(value)
+            clean_value = float(value)
         
         except (TypeError, ValueError) as err:
             raise FieldValueError(
-                "Invalid integer value!",
+                "Invalid float value!",
                 value,
             )
 
@@ -45,7 +45,7 @@ class Integer(Field[str, int]):
                 and clean_value < self.__min_value
         ):
             raise FieldValueError(
-                "Integer exceeds min value!",
+                "Float exceeds min value!",
                 value,
                 self.__min_value,
             )
@@ -55,7 +55,7 @@ class Integer(Field[str, int]):
                 and clean_value > self.__max_value
         ):
             raise FieldValueError(
-                "Integer exceeds max value!",
+                "Float exceeds max value!",
                 value,
                 self.__max_value,
             )

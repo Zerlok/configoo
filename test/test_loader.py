@@ -13,7 +13,7 @@ class TestBaseLoader:
 
 class TestEnvLoader:
     class Config(model.Model):
-        LISTEN_PORT = field.Integer(
+        LISTEN_PORT = field.IntField(
             min_value=1000,
             max_value=10000,
             default=8000,
@@ -28,10 +28,10 @@ class TestEnvLoader:
             skip_empty_parts=True,
         )
 
-        PRESET_PATH = field.FilePath(required=True, exists=True, readable=True)
+        PRESET_PATH = field.FilePathField(required=True, exists=True, readable=True)
 
-        LOG_LEVEL = field.LoggingLevel()
-        LOG_PATH = field.DirectoryPath(required=True, exists=True, writable=True)
+        LOG_LEVEL = field.LoggingLevelField()
+        LOG_PATH = field.DirectoryPathField(required=True, exists=True, writable=True)
     
     def test_valid_config(self, monkeypatch):
         envs = {

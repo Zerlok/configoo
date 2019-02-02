@@ -5,11 +5,11 @@ from .base import Field, PT, RT
 from .exception import FieldValueError
 
 __all__ = [
-    'String',
+    'StrField',
 ]
 
 
-class String(Field[str, str]):
+class StrField(Field[str, str]):
     class Modifyer(enum.Enum):
         NONE = 'none'
         UPPER = 'upper'

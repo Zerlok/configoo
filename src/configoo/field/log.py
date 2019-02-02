@@ -4,17 +4,17 @@ import logging
 from .base import Field, PT, RT
 from .exception import FieldValueError
 
-from .string import String
-from .list import ListField
+from .str_field import StrField
+from .list_field import ListField
 
 __all__ = [
-    'LoggingLevel',
-    'LoggingRecordFormat',
-    'LoggingBracketRecordFormat',
+    'LoggingLevelField',
+    'LoggingFormatField',
+    'LoggingBracketFormatField',
 ]
 
 
-class LoggingLevel(Field[str, str]):
+class LoggingLevelField(Field[str, str]):
     def __init__(
             self,
             name: str = None,
@@ -43,7 +43,7 @@ class LoggingLevel(Field[str, str]):
         return clean_value
 
 
-class LoggingRecordFormat(Field[str, str]):
+class LoggingFormatField(Field[str, str]):
     __ALLOWED_RECORD_FIELDS = {
         'name': 'name',
         'levelno': 'levelno',
@@ -93,10 +93,10 @@ class LoggingRecordFormat(Field[str, str]):
         )
 
         self.__dtype = ListField(
-            dtype=String(
+            dtype=StrField(
                 required=True,
                 default=None,
-                modifyer=String.Modifyer.NONE,
+                modifyer=StrField.Modifyer.NONE,
             ),
             required=False,
             default=self.default or self.__DEFAULT_RECORD_FIELDS,
@@ -139,7 +139,7 @@ class LoggingRecordFormat(Field[str, str]):
         return ' '.join(fields)
 
 
-class LoggingBracketRecordFormat(LoggingRecordFormat):
+class LoggingBracketFormatField(LoggingFormatField):
     def apply_field_format(self, name: str) -> str:
         if name == 'message':
             return f"%({name})s"

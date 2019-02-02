@@ -1,22 +1,22 @@
-from typing import Type, Optional
+from typing import Type
 
 from .base import Field, PT, RT
 from .exception import FieldValueError
 
 __all__ = [
-    'Float',
+    'IntField',
 ]
 
 
-class Float(Field[str, float]):
+class IntField(Field[str, int]):
     def __init__(
             self,
             name: str = None,
             required: bool = False,
-            default: float = None,
+            default: int = None,
             description: str = None,
-            min_value: float = None,
-            max_value: float = None,
+            min_value: int = None,
+            max_value: int = None,
     ) -> None:
         super().__init__(
             name=name,
@@ -24,19 +24,19 @@ class Float(Field[str, float]):
             default=default,
             description=description,
             parse_type=str,
-            return_type=float,
+            return_type=int,
         )
-
+        
         self.__min_value = min_value
         self.__max_value = max_value
     
-    def parse(self, value: str) -> float:
+    def parse(self, value: str) -> int:
         try:
-            clean_value = float(value)
+            clean_value = int(value)
         
         except (TypeError, ValueError) as err:
             raise FieldValueError(
-                "Invalid float value!",
+                "Invalid integer value!",
                 value,
             )
 
@@ -45,7 +45,7 @@ class Float(Field[str, float]):
                 and clean_value < self.__min_value
         ):
             raise FieldValueError(
-                "Float exceeds min value!",
+                "Integer exceeds min value!",
                 value,
                 self.__min_value,
             )
@@ -55,7 +55,7 @@ class Float(Field[str, float]):
                 and clean_value > self.__max_value
         ):
             raise FieldValueError(
-                "Float exceeds max value!",
+                "Integer exceeds max value!",
                 value,
                 self.__max_value,
             )

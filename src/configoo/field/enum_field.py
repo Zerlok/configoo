@@ -5,14 +5,14 @@ from .base import Field, PT, RT
 from .exception import FieldValueError
 
 __all__ = [
-    'Enum',
+    'EnumField',
 ]
 
 
 T = TypeVar('T')
 
 
-class Enum(Field[str, T]):
+class EnumField(Field[str, T]):
     def __init__(
             self,
             dtype: Union[Type[T], Type[enum.Enum]],

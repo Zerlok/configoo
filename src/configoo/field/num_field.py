@@ -4,14 +4,14 @@ from .base import Field, PT, RT
 from .exception import FieldValueError
 
 __all__ = [
-    'Number',
+    'NumField',
 ]
 
 
 Num = Union[int, float]
 
 
-class Number(Field[str, Num]):
+class NumField(Field[str, Num]):
     def __init__(
             self,
             name: str = None,
