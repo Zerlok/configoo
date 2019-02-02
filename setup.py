@@ -16,7 +16,7 @@ def load_text(path: Path) -> str:
 
 setup(
     name=LIB_NAME,
-    version='0.0.3',
+    version='0.1.0',
     description='Python config lib for loading application configurations',
     long_description=load_text(PROJECT_DIR / 'README.md'),
     long_description_content_type='text/markdown',
