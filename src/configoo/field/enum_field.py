@@ -2,7 +2,7 @@ from typing import Type, TypeVar, Union
 import enum
 
 from .base import Field, PT, RT
-from .exception import FieldValueError
+from ..exception import FieldValueError
 
 __all__ = [
     'EnumField',

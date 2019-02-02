@@ -6,6 +6,7 @@ import logging
 import enum
 from pathlib import Path as _Path
 
+from configoo.exception import *
 from configoo.field import *
 
 

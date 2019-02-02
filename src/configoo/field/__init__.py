@@ -1,4 +1,3 @@
-from .exception import *
 from .base import *
 from .int_field import *
 from .float_field import *

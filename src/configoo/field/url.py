@@ -4,7 +4,7 @@ from ipaddress import ip_address, IPv4Address, IPv6Address
 from urllib.parse import urlparse, ParseResult as Url
 
 from .base import Field, PT, RT
-from .exception import FieldValueError
+from ..exception import FieldValueError
 
 from .int_field import IntField
 

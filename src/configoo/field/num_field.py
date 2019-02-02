@@ -1,7 +1,7 @@
 from typing import Type, Union
 
 from .base import Field, PT, RT
-from .exception import FieldValueError
+from ..exception import FieldValueError
 
 __all__ = [
     'NumField',

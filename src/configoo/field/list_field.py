@@ -1,7 +1,7 @@
 from typing import Type, TypeVar, List, Callable
 
 from .base import Field, PT, RT, FieldDefinition
-from .exception import FieldValueError
+from ..exception import FieldValueError
 
 __all__ = [
     'ListField',

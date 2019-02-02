@@ -1,7 +1,8 @@
 from typing import Type, TypeVar, Dict, Callable, Tuple, List, Any
 
+from ..exception import FieldValueError
+
 from .base import Field, PT, RT, FieldDefinition
-from .exception import FieldValueError
 
 __all__ = [
     'DictField',

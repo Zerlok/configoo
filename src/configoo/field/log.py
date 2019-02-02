@@ -2,7 +2,7 @@ from typing import Type, List
 import logging
 
 from .base import Field, PT, RT
-from .exception import FieldValueError
+from ..exception import FieldValueError
 
 from .str_field import StrField
 from .list_field import ListField

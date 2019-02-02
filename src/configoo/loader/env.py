@@ -1,43 +1,19 @@
 from typing import Type, Any, Union
 from os import getenv
 
-from ..field import FieldDefinition, FieldValueError
+from ..exception import LoaderError, FieldValueError
+from ..field import FieldDefinition
 
 from .base import BaseLoader, BaseLoaderDriver, BaseLoaderContext, PT, RT, M
-from .exception import LoaderError
 
 __all__ = [
     'EnvLoaderDriver',
     'EnvLoader',
-    'EnvLoaderError',
-    'EnvVariableError',
-    'EnvRequiredVariableError',
-    'EnvVariableValueError',
 ]
-
-
-class EnvLoaderError(LoaderError):
-    pass
-
-
-class EnvVariableError(EnvLoaderError):
-    pass
-
-
-class EnvRequiredVariableError(EnvVariableError):
-    pass
-
-
-class EnvVariableValueError(EnvVariableError):
-    pass
 
 
 class EnvLoaderDriver(BaseLoaderDriver[str]):
     _PARSING_TYPE = str
-
-    _LOADER_ERROR = EnvLoaderError
-    _REQUIRED_FIELD_VALUE_ERROR = EnvRequiredVariableError
-    _FIELD_VALUE_ERROR = EnvVariableValueError
 
     def get_field_value(self, context: BaseLoaderContext[str, M]) -> Union[int, str]:
         return getenv(context.field.name, default=self._NONE)

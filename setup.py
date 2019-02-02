@@ -19,5 +19,11 @@ setup(
     install_requires=[
     ],
     extras_require={
+        'env': [],
+        'dotenv': [
+            'python-dotenv~=0.10',
+        ],
+        'json': [],
+        # 'yaml': ['yaml'],
     },
 )

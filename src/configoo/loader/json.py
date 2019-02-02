@@ -3,35 +3,15 @@ from typing import Type, Any, Union, Optional, Dict
 import json
 from pathlib import Path
 
-from ..field import FieldDefinition, FieldValueError
+from ..exception import LoaderError, FieldValueError
+from ..field import FieldDefinition
 
 from .base import BaseLoader, BaseLoaderDriver, BaseLoaderContext, PT, RT, M
-from .exception import LoaderError
 
 __all__ = [
     'JsonLoaderDriver',
     'JsonLoader',
-    'JsonLoaderError',
-    'JsonVariableError',
-    'JsonRequiredVariableError',
-    'JsonVariableValueError',
 ]
-
-
-class JsonLoaderError(LoaderError):
-    pass
-
-
-class JsonVariableError(JsonLoaderError):
-    pass
-
-
-class JsonRequiredVariableError(JsonVariableError):
-    pass
-
-
-class JsonVariableValueError(JsonVariableError):
-    pass
 
 
 class JsonLoaderContext(BaseLoaderContext[Any, M]):
@@ -80,10 +60,6 @@ class JsonLoaderDriver(BaseLoaderDriver[Any]):
     )
 
     _PARSING_TYPE = Union[None, int, float, str, list, dict]
-
-    _LOADER_ERROR = JsonLoaderError
-    _REQUIRED_FIELD_VALUE_ERROR = JsonRequiredVariableError
-    _FIELD_VALUE_ERROR = JsonVariableValueError
 
     def create_context(
             self,

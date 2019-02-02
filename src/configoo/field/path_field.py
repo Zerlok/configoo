@@ -3,7 +3,7 @@ from os import access, R_OK, W_OK, X_OK
 from pathlib import Path as _Path
 
 from .base import Field, PT, RT
-from .exception import FieldValueError
+from ..exception import FieldValueError
 
 __all__ = [
     'PathField',

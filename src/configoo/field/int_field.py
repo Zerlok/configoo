@@ -1,7 +1,8 @@
 from typing import Type
 
+from ..exception import FieldValueError
+
 from .base import Field, PT, RT
-from .exception import FieldValueError
 
 __all__ = [
     'IntField',
