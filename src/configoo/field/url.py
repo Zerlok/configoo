@@ -2,7 +2,7 @@ from typing import Type, Union
 from ipaddress import ip_address, IPv4Address, IPv6Address
 
 from .base import Field, PT, RT
-from .exception import ParseError
+from .exception import FieldValueError
 
 __all__ = [
     'Url',
@@ -75,7 +75,7 @@ class IpAddress(Field[str, IP]):
             clean_value = ip_address(value)
         
         except (TypeError, ValueError) as err:
-            raise ParseError(
+            raise FieldValueError(
                 "Invalid ip address!",
                 value,
             )

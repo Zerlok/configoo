@@ -1,7 +1,7 @@
 from typing import Type
 
 from .base import Field, PT, RT
-from .exception import ParseError
+from .exception import FieldValueError
 
 __all__ = [
     'Float',
@@ -32,7 +32,7 @@ class Float(Field[str, float]):
             clean_value = float(value)
         
         except (TypeError, ValueError) as err:
-            raise ParseError(
+            raise FieldValueError(
                 "Invalid float value!",
                 value,
             )
@@ -41,7 +41,7 @@ class Float(Field[str, float]):
                 self.__min_value is not None
                 and clean_value < self.__min_value
         ):
-            raise ParseError(
+            raise FieldValueError(
                 "Float exceeds min value!",
                 value,
                 self.__min_value,
@@ -51,7 +51,7 @@ class Float(Field[str, float]):
                 self.__max_value is not None
                 and clean_value > self.__max_value
         ):
-            raise ParseError(
+            raise FieldValueError(
                 "Float exceeds max value!",
                 value,
                 self.__max_value,

@@ -1,7 +1,7 @@
 from typing import Type, Union
 
 from .base import Field, PT, RT
-from .exception import ParseError
+from .exception import FieldValueError
 
 __all__ = [
     'Number',
@@ -37,7 +37,7 @@ class Number(Field[str, Num]):
                 clean_value = int(clean_value)
         
         except (TypeError, ValueError) as err:
-            raise ParseError(
+            raise FieldValueError(
                 "Invalid number value!",
                 value,
             )
@@ -46,7 +46,7 @@ class Number(Field[str, Num]):
                 self.__min_value is not None
                 and clean_value < self.__min_value
         ):
-            raise ParseError(
+            raise FieldValueError(
                 "Number exceeds min value!",
                 value,
                 self.__min_value,
@@ -56,7 +56,7 @@ class Number(Field[str, Num]):
                 self.__max_value is not None
                 and clean_value > self.__max_value
         ):
-            raise ParseError(
+            raise FieldValueError(
                 "Number exceeds max value!",
                 value,
                 self.__max_value,

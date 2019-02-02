@@ -1,7 +1,7 @@
 from typing import Type
 
 from .base import Field, PT, RT
-from .exception import ParseError
+from .exception import FieldValueError
 
 __all__ = [
     'Integer',
@@ -32,7 +32,7 @@ class Integer(Field[str, int]):
             clean_value = int(value)
         
         except (TypeError, ValueError) as err:
-            raise ParseError(
+            raise FieldValueError(
                 "Invalid integer value!",
                 value,
             )
@@ -41,7 +41,7 @@ class Integer(Field[str, int]):
                 self.__min_value is not None
                 and clean_value < self.__min_value
         ):
-            raise ParseError(
+            raise FieldValueError(
                 "Integer exceeds min value!",
                 value,
                 self.__min_value,
@@ -51,7 +51,7 @@ class Integer(Field[str, int]):
                 self.__max_value is not None
                 and clean_value > self.__max_value
         ):
-            raise ParseError(
+            raise FieldValueError(
                 "Integer exceeds max value!",
                 value,
                 self.__max_value,

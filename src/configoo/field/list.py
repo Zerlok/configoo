@@ -1,7 +1,7 @@
 from typing import Type, TypeVar, List, Callable
 
 from .base import Field, PT, RT, FieldDefinition
-from .exception import ParseError
+from .exception import FieldValueError
 
 __all__ = [
     'ListField',
@@ -45,50 +45,49 @@ class ListField(Field[str, T]):
     
     @dtype.setter
     def dtype(self, value: Field[str, T]) -> None:
-        return self.__dtype
+        self.__dtype = value
     
     def parse(self, value: str) -> List[T]:
         try:
-            parts = value.split(self.__separator)
+            parts = value.split(self.__separator) if len(value) else []
         
         except (TypeError, ValueError) as err:
-            raise ParseError(
+            raise FieldValueError(
                 "Invalid list value!",
                 value,
             )
         
-        cleanList = []
+        clean_list = []
 
         for i, part in enumerate(parts):
-            if not self.__skip_empty_parts or part:
-                try:
-                    clean_part = self.__dtype.parse(part)
-        
-                except ParseError as err:
-                    raise ParseError(
-                        "Invalid list item value!",
-                        i,
-                        part,
-                    ) from err
-                
-                else:
-                    cleanList.append(clean_part)
+            try:
+                clean_part = self.__dtype.parse(part)
+    
+            except FieldValueError as err:
+                raise FieldValueError(
+                    "Invalid list item value!",
+                    i,
+                    part,
+                ) from err
 
-        if self.__not_empty and not cleanList:
-            raise ParseError(
+            if not self.__skip_empty_parts or clean_part:
+                clean_list.append(clean_part)
+
+        if self.__not_empty and not clean_list:
+            raise FieldValueError(
                 "List is empty!",
                 value,
                 self.__separator,
             )
         
-        if self.__length is not None and len(cleanList) != self.__length:
-            raise ParseError(
+        if self.__length is not None and len(clean_list) != self.__length:
+            raise FieldValueError(
                 "List length is invalid!",
-                len(cleanList),
+                len(clean_list),
                 self.__length,
             )
         
-        return cleanList
+        return clean_list
 
     def define(
             self,

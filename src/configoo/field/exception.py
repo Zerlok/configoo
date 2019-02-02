@@ -1,7 +1,12 @@
 __all__ = [
-    'ParseError',
+    'FieldError',
+    'FieldValueError',
 ]
 
 
-class ParseError(Exception):
+class FieldError(Exception):
+    pass
+
+
+class FieldValueError(FieldError):
     pass

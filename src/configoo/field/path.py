@@ -3,7 +3,7 @@ from os import access, R_OK, W_OK, X_OK
 from pathlib import Path as _Path
 
 from .base import Field, PT, RT
-from .exception import ParseError
+from .exception import FieldValueError
 
 __all__ = [
     'Path',
@@ -43,7 +43,7 @@ class Path(Field[str, _Path]):
             clean_value = _Path(value)
         
         except TypeError as err:
-            raise ParseError(
+            raise FieldValueError(
                 "Invalid path value!",
                 value,
             )
@@ -67,13 +67,13 @@ class Path(Field[str, _Path]):
         if self.__exists is not None:
             clean_exists = path.exists()
             if self.__exists and not clean_exists:
-                raise ParseError(
+                raise FieldValueError(
                     "Path does not exists!",
                     path,
                 )
             
             if not self.__exists and clean_exists:
-                raise ParseError(
+                raise FieldValueError(
                     "Path does exists!",
                     path,
                 )
@@ -84,13 +84,13 @@ class Path(Field[str, _Path]):
         if self.__readable is not None:
             readable = access(path, R_OK)
             if self.__readable and not readable:
-                raise ParseError(
+                raise FieldValueError(
                     "Path is not readable!",
                     path,
                 )
             
             if not self.__readable and readable:
-                raise ParseError(
+                raise FieldValueError(
                     "Path is readable!",
                     path,
                 )
@@ -101,13 +101,13 @@ class Path(Field[str, _Path]):
         if self.__writable is not None:
             writable = access(path, W_OK)
             if self.__writable and not writable:
-                raise ParseError(
+                raise FieldValueError(
                     "Path is not writable!",
                     path,
                 )
             
             if not self.__writable and writable:
-                raise ParseError(
+                raise FieldValueError(
                     "Path is writable!",
                     path,
                 )
@@ -118,13 +118,13 @@ class Path(Field[str, _Path]):
         if self.__executable is not None:
             executable = access(path, X_OK)
             if self.__executable and not executable:
-                raise ParseError(
+                raise FieldValueError(
                     "Path is not executable!",
                     path,
                 )
             
             if not self.__executable and executable:
-                raise ParseError(
+                raise FieldValueError(
                     "Path is executable!",
                     path,
                 )
@@ -137,7 +137,7 @@ class FilePath(Path):
         clean_value = super().parse(value)
 
         if not clean_value.is_file():
-            raise ParseError(
+            raise FieldValueError(
                 "Path is not a file!",
                 clean_value,
             )
@@ -150,7 +150,7 @@ class DirectoryPath(Path):
         clean_value = super().parse(value)
 
         if not clean_value.is_dir():
-            raise ParseError(
+            raise FieldValueError(
                 "Path is not a directory!",
                 clean_value,
             )
