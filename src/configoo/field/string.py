@@ -33,12 +33,14 @@ class String(Field[str, str]):
             name: str = None,
             required: bool = False,
             default: int = None,
+            description: str = None,
             modifyer: Modifyer = None,
     ) -> None:
         super().__init__(
             name=name,
             required=required,
             default=default,
+            description=description,
             parse_type=str,
             return_type=str,
         )
@@ -46,7 +48,7 @@ class String(Field[str, str]):
         self.__modifyer = modifyer
     
     @property
-    def modifyer(self) -> Optional[Modifyer]:
+    def modifyer(self) -> Optional['Modifyer']:
         return self.__modifyer
 
     @modifyer.setter

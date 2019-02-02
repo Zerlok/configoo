@@ -2,11 +2,24 @@
 
 PROJECT_DIR=$( dirname $( dirname $( realpath $0 ) ) )
 
-export PYTHONPATH=$PROJECT_DIR/src
+SRC_DIR=$PROJECT_DIR/src
+TEST_DIR=$PROJECT_DIR/test
+
+export PYTHONPATH=$SRC_DIR
+
+path=${1:-"${TEST_DIR}"}
+
+if [[ -z $1 ]]; then
+    cov=" \
+        --cov-config $TEST_DIR/.coveragerc \
+        --cov $SRC_DIR \
+    "
+fi
 
 pytest \
     -p no:cacheprovider \
-    --cov src \
-    $PROJECT_DIR/test
+    $cov \
+    $path
 
-rm $PWD/.coverage
+[[ -n $cov ]] && \
+    rm -f $PWD/.coverage

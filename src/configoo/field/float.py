@@ -1,4 +1,4 @@
-from typing import Type
+from typing import Type, Optional
 
 from .base import Field, PT, RT
 from .exception import FieldValueError
@@ -14,6 +14,7 @@ class Float(Field[str, float]):
             name: str = None,
             required: bool = False,
             default: float = None,
+            description: str = None,
             min_value: float = None,
             max_value: float = None,
     ) -> None:
@@ -21,9 +22,11 @@ class Float(Field[str, float]):
             name=name,
             required=required,
             default=default,
+            description=description,
             parse_type=str,
             return_type=float,
         )
+
         self.__min_value = min_value
         self.__max_value = max_value
     

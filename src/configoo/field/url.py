@@ -20,11 +20,13 @@ class Url(Field[str, str]):
             name: str = None,
             required: bool = False,
             default: Union[IP, str] = None,
+            description: str = None,
     ) -> None:
         super().__init__(
             name=name,
             required=required,
             default=default,
+            description=description,
             parse_type=str,
             return_type=str,
         )
@@ -39,11 +41,13 @@ class Route(Field[str, str]):
             name: str = None,
             required: bool = False,
             default: Union[IP, str] = None,
+            description: str = None,
     ) -> None:
         super().__init__(
             name=name,
             required=required,
             default=default,
+            description=description,
             parse_type=str,
             return_type=str,
         )
@@ -58,6 +62,7 @@ class IpAddress(Field[str, IP]):
             name: str = None,
             required: bool = False,
             default: Union[IP, str] = None,
+            description: str = None,
     ) -> None:
         if default is not None and not isinstance(default, IP):
             default = ip_address(default)
@@ -68,6 +73,7 @@ class IpAddress(Field[str, IP]):
             default=default,
             parse_type=str,
             return_type=IP,
+            description=description,
         )
     
     def parse(self, value: str) -> IP:

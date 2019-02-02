@@ -19,12 +19,14 @@ class Field(Generic[PT, RT]):
             name: str = None,
             required: bool = False,
             default: Any = None,
+            description: str = None,
             parse_type: Type[PT] = None,
             return_type: Type[RT] = None,
     ) -> None:
         self.__name = name
         self.__required = required
         self.__default = default
+        self.__description = description
         self.__parse_type = parse_type
         self.__return_type = return_type
     
@@ -53,6 +55,14 @@ class Field(Generic[PT, RT]):
         self.__default = value
     
     @property
+    def description(self) -> Optional[str]:
+        return self.__description
+    
+    @description.setter
+    def description(self, value: Optional[str]) -> None:
+        self.__description = value
+    
+    @property
     def parse_type(self) -> Type[PT]:
         return self.__parse_type
     
@@ -67,15 +77,6 @@ class Field(Generic[PT, RT]):
     @return_type.setter
     def return_type(self, value: Type[RT]) -> None:
         self.__return_type = value
-
-    def copy(self) -> 'Field':
-        return self.__class__(
-            name=self.name,
-            required=self.required,
-            default=self.default,
-            parse_type=self.parse_type,
-            return_type=self.return_type,
-        )
     
     def parse(self, value: PT) -> RT:
         raise NotImplementedError
@@ -107,6 +108,7 @@ class FieldDefinition(Generic[PT, RT]):
             name=field.name,
             required=field.required,
             default=field.default,
+            description=field.description,
             parse_type=field.parse_type,
             return_type=field.return_type,
             parser=field.parse,
@@ -119,6 +121,7 @@ class FieldDefinition(Generic[PT, RT]):
             name: str,
             required: bool,
             default: Any,
+            description: Optional[str],
             parse_type: Type[PT],
             return_type: Type[RT],
             parser: Callable[[PT], RT],
@@ -129,11 +132,13 @@ class FieldDefinition(Generic[PT, RT]):
             )
 
         self.__model = model
-        self.__parse_type = parse_type
-        self.__return_type = return_type
         self.__name = name
         self.__required = required
         self.__default = default
+        self.__description = description
+        
+        self.__parse_type = parse_type
+        self.__return_type = return_type
         self.__parser = parser
     
     def __str__(self) -> str:
@@ -158,6 +163,10 @@ class FieldDefinition(Generic[PT, RT]):
         return self.__default
     
     @property
+    def description(self) -> Optional[str]:
+        return self.__description
+    
+    @property
     def parse_type(self) -> Type[PT]:
         return self.__parse_type
     
@@ -168,7 +177,3 @@ class FieldDefinition(Generic[PT, RT]):
     @property
     def parser(self) -> Callable[[PT], RT]:
         return self.__parser
-    
-    @property
-    def description(self) -> str:
-        return "TODO: docstring"

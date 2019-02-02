@@ -20,17 +20,19 @@ class LoggingLevel(Field[str, str]):
             name: str = None,
             required: bool = False,
             default: str = None,
+            description: str = None,
     ) -> None:
         super().__init__(
             name=name,
             required=required,
             default=default,
+            description=description,
             parse_type=str,
             return_type=str,
         )
     
     def parse(self, value: str) -> str:
-        clean_value = logging._nameToLevel.get(value.upper())
+        clean_value = logging._nameToLevel.get(str(value).upper())
 
         if clean_value is None:
             raise FieldValueError(
@@ -78,12 +80,14 @@ class LoggingRecordFormat(Field[str, str]):
             name: str = None,
             required: bool = False,
             default: List[str] = None,
+            description: str = None,
             parse_field_separator: str = None,
     ) -> None:
         super().__init__(
             name=name,
             required=required,
             default=default,
+            description=description,
             parse_type=str,
             return_type=str,
         )

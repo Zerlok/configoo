@@ -19,6 +19,7 @@ class Enum(Field[str, T]):
             name: str = None,
             required: bool = False,
             default: Union[T, enum.Enum] = None,
+            description: str = None,
     ) -> None:
         super().__init__(
             name=name,
@@ -26,6 +27,7 @@ class Enum(Field[str, T]):
             default=default,
             parse_type=str,
             return_type=str,
+            description=description,
         )
 
         self.__dtype = dtype

@@ -20,6 +20,7 @@ class Path(Field[str, _Path]):
             name: str = None,
             required: bool = False,
             default: AnyPath = None,
+            description: str = None,
             exists: bool = None,
             readable: bool = None,
             writable: bool = None,
@@ -29,6 +30,7 @@ class Path(Field[str, _Path]):
             name=name,
             required=required,
             default=default,
+            description=description,
             parse_type=str,
             return_type=_Path,
         )

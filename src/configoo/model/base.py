@@ -8,11 +8,11 @@ __all__ = [
 
 
 class Model:
-    __annotations__ = {}
+    __annotations__: Dict[str, Type] = {}
     
     __FIELDS: ClassVar[Dict[str, FieldDefinition]]
 
-    _data: Dict[str, Any]
+    __data: Dict[str, Any]
 
     def __init_subclass__(cls, *args, **kwargs) -> None:
         cls.__FIELDS = {}
@@ -44,7 +44,7 @@ class Model:
         cls.__FIELDS[key] = field
 
         def field_value_getter(self) -> field.return_type:
-            return self._data[key]
+            return self.__data[key]
         
         field_property = property(
             fget=field_value_getter,
@@ -68,12 +68,12 @@ class Model:
             self,
             **kwargs,
     ) -> None:
-        self._data = kwargs
+        self.__data = kwargs
     
     def __str__(self) -> str:
         values = ', '.join(
             f"{key}={value}"
-            for key, value in self._data.items()
+            for key, value in self
         )
 
         return f"{self.__class__.__name__}(" \
@@ -81,3 +81,12 @@ class Model:
                 ")"
     
     __repr__ = __str__
+
+    def __iter__(self) -> Iterable[Tuple[str, Any]]:
+        return (
+            (
+                key,
+                value,
+            )
+            for key, value in self.__data.items()
+        )

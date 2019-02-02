@@ -1,0 +1,6 @@
+[run]
+omit = *__init__*
+
+[report]
+sort = Cover
+show_missing = True

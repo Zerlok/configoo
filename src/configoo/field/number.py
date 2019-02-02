@@ -17,6 +17,7 @@ class Number(Field[str, Num]):
             name: str = None,
             required: bool = False,
             default: Num = None,
+            description: str = None,
             min_value: Num = None,
             max_value: Num = None,
     ) -> None:
@@ -24,9 +25,11 @@ class Number(Field[str, Num]):
             name=name,
             required=required,
             default=default,
+            description=description,
             parse_type=str,
             return_type=Num,
         )
+        
         self.__min_value = min_value
         self.__max_value = max_value
     
