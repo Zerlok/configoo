@@ -6,29 +6,6 @@ from pathlib import Path
 from configoo import field, model, loader
 
 
-def create_model_with_fields(*args) -> 'MockModel':
-    class MockModel(model.Model):
-        fields = {
-            name: dtype
-            for name, dtype in args
-        }
-
-        @classmethod
-        def iter_fields(cls):
-            return cls.fields.items()
-
-        def __init__(self, **kwargs):
-            self.data = kwargs
-
-    return MockModel
-
-
-class MockLoader(loader.Loader):
-    # def load_field(self, field):
-    #     return field
-    pass
-
-
 @pytest.mark.skip
 class TestBaseLoader:
     pass
@@ -82,14 +59,11 @@ class TestEnvLoader:
 
         def getenv(name: str, default=None):
             return envs.get(name, [default])[0]
-        # monkeypatch.setattr('os.getenv', getenv)
 
-        driver = loader.EnvLoaderDriver()
-        # TODO: make monkeypatch work!
-        driver.get_field_value = lambda context: getenv(context.field.name, default=driver._NONE)
+        monkeypatch.setattr('configoo.loader.env.getenv', getenv)
         
         loader_ = loader.EnvLoader(
-            driver=driver,
+            driver=loader.EnvLoaderDriver(),
         )
         
         config = loader_.load_model(self.Config)
