@@ -1,4 +1,3 @@
-from abc import ABCMeta, abstractmethod
 from typing import TypeVar, Type, Generic, Optional, Iterable, Tuple, ClassVar, Any, Dict
 
 from ..exception import LoaderError, FieldValueError
@@ -15,7 +14,6 @@ __all__ = [
 ]
 
 M = TypeVar('M', bound=Model)
-RT = TypeVar('RT')
 
 
 class LoaderContext(Generic[PT, M]):

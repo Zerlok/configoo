@@ -1,4 +1,4 @@
-from typing import Type, Optional
+from typing import Type
 
 from .base import Field, PT, RT
 from ..exception import FieldValueError

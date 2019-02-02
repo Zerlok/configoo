@@ -9,6 +9,7 @@ from ..field import FieldDefinition
 from .base import BaseLoader, BaseLoaderDriver, BaseLoaderContext, PT, RT, M
 
 __all__ = [
+    'JsonLoaderContext',
     'JsonLoaderDriver',
     'JsonLoader',
 ]
@@ -107,6 +108,6 @@ class JsonLoader(BaseLoader[Any]):
         
         data = self.load(context)
 
-        config = model(**data)
+        config = model(data)
 
         return config

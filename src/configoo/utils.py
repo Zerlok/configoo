@@ -53,6 +53,24 @@ def load_from_json(
     )
 
 
+def load_from_dotenv(
+        model: Type[T],
+        path: Path,
+        loader: Type['DotenvLoader'] = None,
+        driver: 'DotenvLoaderDriver' = None,
+) -> T:
+    from .loader import dotenv
+    
+    loader = (loader or dotenv.DotenvLoader)(
+        driver=driver,
+    )
+
+    return loader.load_model(
+        model=model,
+        path=path,
+    )
+
+
 def __get_loader_args_kwargs(
         item: LoaderItem,
         default_args: Any = None,
@@ -83,7 +101,7 @@ def load_rewriting(
         context_data = loader.load(context)
         data.update(context_data)
     
-    return model(**data)
+    return model(data)
 
 
 def load_appending(
@@ -105,4 +123,4 @@ def load_appending(
         for key, value in context_data.items():
             data.setdefault(key, value)
     
-    return model(**data)
+    return model(data)

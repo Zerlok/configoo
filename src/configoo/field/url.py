@@ -1,4 +1,4 @@
-from typing import Type, Union
+from typing import Union
 
 from ipaddress import ip_address, IPv4Address, IPv6Address
 from urllib.parse import urlparse, ParseResult as Url

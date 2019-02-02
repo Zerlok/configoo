@@ -42,11 +42,6 @@ class Config(model.Model):
     )
 
 
-@pytest.mark.skip
-class TestBaseLoader:
-    pass
-
-
 class TestEnvLoader:
     def test_valid_config(self, monkeypatch):
         envs = {
@@ -86,12 +81,32 @@ class TestEnvLoader:
 
 class TestJsonLoader:
     RESOURCES = Path(__file__).parent / 'resources'
-    VALID_CONFIG_PATH = RESOURCES / 'json_config1.json'
+    VALID_CONFIG_PATH = RESOURCES / 'json' / 'config1.json'
 
     def test_valid_config(self):
         l = loader.JsonLoader(
             driver=loader.JsonLoaderDriver(),
         )
+
+        config = l.load_model(Config, path=self.VALID_CONFIG_PATH)
+
+        assert config.RUNNING_MODE is config.Mode.B
+        assert config.LISTEN_PORT == 8000
+        assert config.LISTEN_ENDPOINT == '/webhook'
+        assert config.REMOTE_ENDPOINTS == ['/endpoint1', '/endpoint2', '/endpoint3']
+        assert config.PRESET_PATH.absolute() == self.VALID_CONFIG_PATH
+        assert config.LOG_LEVEL == logging.INFO
+        assert config.LOG_PATH.absolute() == self.RESOURCES
+        assert config.SCHEMA == {'FOO': 'bar', 'SPAM': 'eggs'}
+
+
+class TestDotenvLoader:
+    RESOURCES = Path(__file__).parent / 'resources'
+    VALID_CONFIG_PATH = RESOURCES / 'dotenv' / 'env'
+
+    def test_valid_config(self):
+        from configoo.loader import dotenv
+        l = dotenv.DotenvLoader()
 
         config = l.load_model(Config, path=self.VALID_CONFIG_PATH)
 

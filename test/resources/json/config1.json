@@ -5,7 +5,7 @@
         "/endpoint2",
         "/endpoint3"
     ],
-    "PRESET_PATH": "test/resources/json_config1.json",
+    "PRESET_PATH": "test/resources/json/config1.json",
     "LOG_LEVEL": "info",
     "LOG_PATH": "test/resources",
     "SCHEMA": {

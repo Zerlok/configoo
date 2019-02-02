@@ -1,4 +1,4 @@
-from typing import Type, Optional
+from typing import Optional
 import enum
 
 from .base import Field, PT, RT

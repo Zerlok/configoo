@@ -1,4 +1,4 @@
-from typing import Type, Union
+from typing import Union
 
 from .base import Field, PT, RT
 from ..exception import FieldValueError

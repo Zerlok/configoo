@@ -66,9 +66,9 @@ class Model:
     
     def __init__(
             self,
-            **kwargs,
+            data: Dict[str, Any],
     ) -> None:
-        self.__data = kwargs
+        self.__data = data
     
     def __str__(self) -> str:
         values = ', '.join(

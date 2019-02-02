@@ -1,4 +1,4 @@
-from typing import Type, Union
+from typing import Union
 from os import access, R_OK, W_OK, X_OK
 from pathlib import Path as _Path
 

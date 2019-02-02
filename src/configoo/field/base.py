@@ -87,14 +87,6 @@ class Field(Generic[PT, RT]):
     ) -> 'FieldDefinition[PT, RT]':
         return FieldDefinition.create_from_model_field(model, self)
 
-    def _not_none_or_default(
-            self,
-            key: str,
-            value: Optional[T],
-            default: T,
-    ) -> T:
-        return value if value is not None else default
-
 
 class FieldDefinition(Generic[PT, RT]):
     @classmethod

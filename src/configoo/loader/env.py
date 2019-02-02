@@ -42,6 +42,6 @@ class EnvLoader(BaseLoader[str]):
         
         data = self.load(context)
 
-        config = model(**data)
+        config = model(data)
 
         return config
